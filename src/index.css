@@ -11,3 +11,35 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.post{
+  color: black;
+  transition: .2s;
+
+}
+
+.post:hover {
+transform: scale(1.01);
+box-shadow: 4px 5px 20px rgb(207, 207, 207);
+border-color:rgb(46, 112, 236);
+
+  }
+
+  nav{
+    border-bottom: rgb(119, 0, 255) solid 2px;
+  }
+
+  .navbar-item{
+    font-size: 17px;
+    margin: 8px;
+    padding: 6px;
+    color: black;
+  }
+  
+  .navbar-item:hover{
+    margin-bottom: 6px;
+    text-decoration: none;
+    color: black;
+    border-bottom: rgb(119, 0, 255) solid 2px;
+
+  }
