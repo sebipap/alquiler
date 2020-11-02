@@ -2,8 +2,10 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+const path = require('path')
 const dotenv = require('dotenv')
 dotenv.config()
+const PORT = process.env.PORT || 5000
 
 // Importar Routes
 const authRoute = require('./routes/auth')
@@ -25,6 +27,11 @@ app.use('/api/posts', postsRoute)
 app.use('/api/user', userRoute)
 
 
+if(process.env.NODE_ENV == 'production') {
+    app.use(express.static('../src/build'))
+    app.get('*', (req, res) =>{
+        res.sendFile(path.join('../src/build/index.html'))
+    })
+}
 
-
-app.listen(5000, () => console.log('[OK] Server en puerto 5000'))
+app.listen(PORT, () => console.log('[OK] Server en puerto 5000'))

@@ -2,9 +2,9 @@ import React , { Component }from 'react'
 import { Redirect } from "react-router-dom";
 import config from '../../config'
 
-
 import Questions from './Questions'
 import Review from './Review'
+import Map from '../Map'
 
 import Cookies from 'universal-cookie'
 const cookies = new Cookies()
@@ -107,6 +107,8 @@ export default class PostPage extends Component {
                         </div>
                     </li>
                 
+                    <Map />
+
                 </ul>
                
             </div>
