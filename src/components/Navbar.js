@@ -14,7 +14,7 @@ export default class Navbar extends Component {
         return(
             <nav className="navbar navbar-expand-lg">
                 <Link to="/" className="navbar-item">Home</Link>
-                <Link to="/posts" className="navbar-item">Casas en Alquiler</Link>
+                <Link to="/posts" className="navbar-item">Publicaciones</Link>
 
                 {this.props.isLoggedIn ? 
                 <>

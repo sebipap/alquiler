@@ -1,9 +1,7 @@
 import React , { Component }from 'react'
 import { Redirect } from "react-router-dom";
 import config from '../../config'
-
 import Questions from './Questions'
-import Review from './Review'
 import Map from '../Map'
 
 import Cookies from 'universal-cookie'
@@ -16,10 +14,9 @@ export default class PostPage extends Component {
         super()
         this.state = {
             data: [],
-            reviews: [],
             questions: [],
             display: "",
-            redirect: null
+            redirect: null,
         }
     this.editButton = this.editButton.bind(this)
     this.handleEditButton = this.handleEditButton.bind(this)
@@ -36,23 +33,38 @@ export default class PostPage extends Component {
             headers : { 
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              token: cookies.get('token'),
              }
           })
         .then(res => res.json() )
         .then( res => {
             res.post.img_url = config.serverURL + res.post.img_url
-
             this.setState({
                 data: res.post,
-                reviews: res.reviews,
                 questions: res.questions,
+                ownerName: res.ownerName,
+                ownerEmail: res.ownerEmail,
+            })
+        })
+
+        // Check if user is owner
+
+        fetch("/api/posts/owner/" + id, {
+            headers : { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              token: cookies.get('token'),
+             }
+          })
+        .then(res => res.json() )
+        .then( res => {
+            this.setState({
                 isOwner: res.isOwner
             })
-
         })
         this.setState({display:  <div className="alert alert-danger" role="alert">No existe el usuario!</div>})
+
     }
+
 
     handleEditButton(){
         this.setState({redirect: '/editpost/'+this.props.match.params.id})
@@ -61,7 +73,7 @@ export default class PostPage extends Component {
     editButton(){
         if(this.state.isOwner){
             return(
-                <button className="btn btn-primary btn-lg btn-block" type="button" onClick={this.handleEditButton}>Editar Publicación</button>
+                <button className="btn btn-success btn-lg" type="button" onClick={this.handleEditButton}>Editar Publicación</button>
             )
         }
     }
@@ -85,27 +97,80 @@ export default class PostPage extends Component {
                         </div>
                     </div>
                 </div>
-                {this.editButton()}
 
     
 
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
 
-                        <h1>{this.state.data.title}</h1>
-                        <h3>{this.state.data.body}</h3>
-                        <p>$ {this.state.data.night_price} precio por noche</p>
-                        <p>$ {this.state.data.base_price} precio base</p>
+                        <h1>
+                                <strong>{this.state.data.make}</strong>
+                                { " " + this.state.data.model + " "} 
+                                <span class="badge badge-primary">{this.state.data.year}</span>
+                        </h1>
+                        {this.editButton()}
+
                     </li>
 
+
+                    <li  className="list-group-item">
+
+                        <table class="table table-hover">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Marca</td>
+                                    <td>{this.state.data.make}</td>
+                                </tr>
+                                <tr>
+                                    <td>Modelo</td>
+                                    <td>{this.state.data.model}</td>
+                                </tr>
+                                <tr>
+                                    <td>Precio</td>
+                                    <td>USD {this.state.data.price}</td>
+                                </tr>
+                                <tr>
+                                    <td>Año</td>
+                                    <td>{this.state.data.year}</td>
+                                </tr>
+                                <tr>
+                                    <td>Kilometraje</td>
+                                    <td>{this.state.data.km} km</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </li>
+                    <li  className="list-group-item">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Descripción</h5>
+                            {this.state.data.body}
+                        </div>
+                    </div>
+
+                    </li>
+
+
+                    <li  className="list-group-item">
+                        <div className="card bg-dark text-blue" style={{width: 300}}>
+                            <img 
+                            src="https://img.freepik.com/free-vector/stylish-hexagonal-line-pattern-background_1017-19742.jpg?size=626&ext=jpg"
+                            class="card-img" alt="..." />
+                            <div className="card-img-overlay">
+                                <h4 className="card-title">Contacto</h4>
+                                <h5>{this.state.ownerName}</h5>
+                                <p>{this.state.ownerEmail}</p>
+                            </div>
+                        </div>
+
+
+                    </li>
                     <Questions questions={this.state.questions} post_id={this.props.match.params.id} loadPost={this.loadPost}/>
 
-                    <li className="list-group-item" id="reviews">
-                        <div className="card-body">
-                            <h3>Opiniones</h3>
-                            {this.state.reviews.map(review => <Review body={review.body} rating={review.rating} />)}
-                        </div>
-                    </li>
                 
                     <Map />
 

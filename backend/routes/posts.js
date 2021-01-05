@@ -1,19 +1,6 @@
 const router = require('express').Router()
 const verify = require('../verifyToken')
-
-// const multer = require('multer')
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//       cb(null, 'postsImg')
-//     },
-//     filename: (req, file, cb) => {
-//       cb(null, file.fieldname + '-' + Date.now())
-//     }
-//   })   
-// const upload = multer({ storage: storage })
-
 const Post = require('../models/Post')
-const Review = require('../models/Review')
 const Question = require('../models/Question')
 const User = require('../models/User')
 
@@ -30,11 +17,13 @@ router.get('/', async (req, res) =>{
 
     const postsResponse = allPosts.map(post=>{
         return {
-            title: post.title,
-            body: post.body,
             _id: post._id,
-            base_price: post.base_price,
-            night_price: post.night_price,
+            body: post.body,
+            price: post.price,
+            year: post.year,
+            km: post.km,
+            make: post.make,
+            model: post.model,
             img_url: post.img_url
             }
         })
@@ -44,37 +33,50 @@ router.get('/', async (req, res) =>{
 // SINGLE POST
 
 // Get one post by id
-router.get('/:id', verify, async(req, res) =>{
+router.get('/:id', async(req, res) =>{
     const post = await Post.findById(req.params.id)
-    const reviews = await Review.find({post_id: req.params.id})
     const questions = await Question.find({post_id: req.params.id})
-
-    const isOwner = (post.user_id === req.user._id)
+    const owner = await User.findById(post.user_id)
 
     res.send({
         post: post, 
-        reviews: reviews, 
         questions: questions,
-        isOwner: isOwner
+        ownerName: owner.name,
+        ownerEmail: owner.email
+    })
+}) 
+
+// Get if user is owner
+
+router.get('/owner/:id/', verify,  async (req, res) =>{
+
+    const post = await Post.findById(req.params.id)
+
+    res.send({
+        isOwner: post.user_id == req.user._id 
     })
 })
+
+
 // Post a Post
 router.post('/', upload.single("file"), verify, async (req, res) =>{
     
-    const fileName = req.body.title + Date.now() +req.file.detectedFileExtension
+    const fileName = req.user + Date.now() +req.file.detectedFileExtension
+
+
+    console.log(fileName)
 
     const post = new Post({
             user_id: req.user, //esto viene del modulo verify
-            title: req.body.title,
             body: req.body.body,
-            start_date: req.body.start_date,
-            end_date: req.body.end_date,
-            base_price: req.body.base_price,
-            night_price: req.body.night_price,
+            price: req.body.price,
+            year: req.body.year,
+            km: req.body.km,
+            make: req.body.make,
+            model: req.body.model,
             img_url: 'postsImg/' + fileName
         })
 
-        console.log(req.file)
 
     try{
         await pipeline(req.file.stream, fs.createWriteStream(`${__dirname}/../postsImg/${fileName}`))
@@ -89,6 +91,39 @@ router.post('/', upload.single("file"), verify, async (req, res) =>{
  
 
 })
+
+// Edit a Post
+
+router.post('/edit/:id', verify, async (req, res) =>{
+
+    const post = new Post({
+            user_id: req.user, //esto viene del modulo verify
+            body: req.body.body,
+            price: req.body.price,
+            year: req.body.year,
+            km: req.body.km,
+            make: req.body.make,
+            model: req.body.model,
+            img_url: 'postsImg/' + fileName
+        })
+
+
+    try{
+        await pipeline(req.file.stream, fs.createWriteStream(`${__dirname}/../postsImg/${fileName}`))
+        const savedPost = await post.save()
+
+        res.status(200).send({
+            msg: "Publicación realizada!",
+            post: savedPost})
+    }catch(e){
+        res.status(400).send(e)
+    }
+ 
+
+})
+
+
+
 // Delete a Post
 router.delete('/:id',verify, async(req, res) =>{
     const post = await Post.findById(req.params.id)
@@ -108,23 +143,7 @@ router.delete('/:id',verify, async(req, res) =>{
 
 
 })
-// Post a review
-router.post('/:id/review',verify, async(req, res)=>{
-    const review = new Review({
-        user_id: req.user,
-        post_id: req.params.id,
-        body: req.body.body,
-        rating: req.body.rating
-    })
-    try{
-        const savedReview = await review.save()
 
-        res.status(200).send("Review realizada!")
-    }catch(e){
-        res.status(400).send(e)
-    }
-
-})
 // Post a question
 router.post('/:id/question',verify, async(req, res)=>{
         

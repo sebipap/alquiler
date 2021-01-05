@@ -6,32 +6,34 @@ const postSchema = new mongoose.Schema({
         required: true,
         max: 255
     },
-    title: {
-        type: String,
-        required: true,
-        max: 255,
-        min: 4
-    },
     body: {
         type: String,
         max: 2000,
     },
-    start_date: {
-        type: Date,
-        required: true,
-    },
-    end_date: {
-        type: Date,
-        required: true,
-    },
-    base_price: {
+    price: {
         type: Number,
         required: true,
         default: 0,
     },
-    night_price: {
+    year: {
         type: Number,
         required: true,
+    },
+    km: {
+        type: Number,
+        required: true,
+    },
+    make: {
+        type: String,
+        required: true,
+        max: 255,
+        min: 1
+    },
+    model: {
+        type: String,
+        required: true,
+        max: 255,
+        min: 4
     },
     img_url: {
         type: String,

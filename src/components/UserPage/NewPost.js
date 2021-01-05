@@ -1,20 +1,25 @@
 import React, {Component} from 'react'
 import { Redirect } from "react-router-dom";
+
+import Post from '../Posts/Post.js'
+
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 const cookies = new Cookies()
+
 
 export default class NewPost extends Component{
     constructor(){
         super()
         this.state = {
-            title: 'tituloIMG', 
-            body: 'bodyIMG',
-            base_price: '111', 
-            night_price: '222', 
+            body: '',
+            price: '', 
+            year: '', 
+            km: '',
+            make: '',
+            model: '',
+
             errorMsg: '',
-            start_date: '',
-            end_date: '',
             file: null, 
             isError: false,
             isSubmited: false,
@@ -33,12 +38,12 @@ export default class NewPost extends Component{
     
     createPost(){
         const data = new FormData()
-        data.append("title", this.state.title)
         data.append("body", this.state.body)
-        data.append("base_price", this.state.base_price)
-        data.append("night_price", this.state.night_price)
-        data.append("start_date", this.state.start_date)
-        data.append("end_date", this.state.end_date)
+        data.append("price", this.state.price)
+        data.append("year", this.state.year)
+        data.append("km", this.state.km)
+        data.append("make", this.state.make)
+        data.append("model", this.state.model)
         data.append("file", this.state.file)
 
         axios.post('/api/posts', data, {
@@ -54,7 +59,7 @@ export default class NewPost extends Component{
             const newPostURL = res.data.post._id
 
             this.setState({
-                redirect: '/editpost/' + newPostURL
+                redirect: '/user/'
             })
 
 
@@ -66,10 +71,7 @@ export default class NewPost extends Component{
                     isError: true})
             }
         })
-
-
     }
-
 
     alert(){
         if(this.state.isError){
@@ -93,25 +95,66 @@ export default class NewPost extends Component{
 
             return(<>
                 
+
+
+
                 <div className="card mx-auto" style={{maxWidth: 700}}>
                 <div className="card-header">
                     Crear Publicacion
+                    <h5>
+
+                        <strong>{this.state.make}</strong>
+                        { " " + this.state.model + " "} 
+                        <span class="badge badge-primary">{this.state.year}</span>
+                    </h5>
                 </div>
                 <div className="card-body">
                     <form onSubmit={this.handleSubmit}>
     
                         <div className="input-group mb-3">
-                            <div className="input-group-prepend">
-                            </div>
+      
                             <input type="text"
-                                value={this.state.title}
-                                name='title'
+                                value={this.state.make}
+                                name='make'
                                 onChange={this.handleChange}
                                 className="form-control"
-                                placeholder="Título"
-                                aria-label="Título"
+                                placeholder="Marca"
+                                aria-label="Marca"
+                                aria-describedby="basic-addon1"/>
+
+                            <input type="text"
+                                value={this.state.model}
+                                name='model'
+                                onChange={this.handleChange}
+                                className="form-control"
+                                placeholder="Modelo"
+                                aria-label="Modelo"
+                                aria-describedby="basic-addon1"/>
+
+                        </div>
+
+
+                        <div class="input-group mb-3">
+
+                            <input type="number"
+                                    value={this.state.km}
+                                    name='km'
+                                    onChange={this.handleChange}
+                                    className="form-control"
+                                    placeholder="Kilometraje"
+                                    aria-label="Kilometraje"
+                                    aria-describedby="basic-addon1"/>
+
+                            <input type="number"
+                                value={this.state.year}
+                                name='year'
+                                onChange={this.handleChange}
+                                className="form-control"
+                                placeholder="Año"
+                                aria-label="Año"
                                 aria-describedby="basic-addon1"/>
                         </div>
+
     
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
@@ -121,59 +164,25 @@ export default class NewPost extends Component{
                                 name='body'
                                 onChange={this.handleChange}
                                 className="form-control"
-                                placeholder="Descripción de la Publicación"
-                                aria-label="Descripción de la Publicación"
+                                placeholder="Descripción (estado, forma de pago, etc)"
+                                aria-label="Descripción (estado, forma de pago, etc)"
                                 aria-describedby="basic-addon1"/>
                         </div>
     
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
+                                <span class="input-group-text">USD</span>
                             </div>
                             <input type="number"
-                                    value={this.state.night_price}
-                                    name='night_price'
+                                    value={this.state.price}
+                                    name='price'
                                     onChange={this.handleChange}
                                     className="form-control"
-                                    placeholder="Precio Por Noche"
-                                    aria-label="Precio Por Noche"
-                                    aria-describedby="basic-addon1"/>
-                            <div class="input-group-prepend">
-                            <span class="input-group-text">$</span>
-                            </div>
-                            <input type="number"
-                                    value={this.state.base_price}
-                                    name='base_price'
-                                    onChange={this.handleChange}
-                                    className="form-control"
-                                    placeholder="Tarifa fija"
-                                    aria-label="Tarifa fija"
+                                    placeholder="Precio en un pago en dólares"
+                                    aria-label="Precio en un pago en dólares"
                                     aria-describedby="basic-addon1"/>
                         </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Desde</span>
-                            </div>
-                            <input type="date"
-                                    value={this.state.start_date}
-                                    name='start_date'
-                                    onChange={this.handleChange}
-                                    className="form-control"
-                                    placeholder="Precio Por Noche"
-                                    aria-label="Precio Por Noche"
-                                    aria-describedby="basic-addon1"/>
-                            <div class="input-group-prepend">
-                            <span class="input-group-text">Hasta</span>
-                            </div>
-                            <input type="date"
-                                    value={this.state.end_date}
-                                    name='end_date'
-                                    onChange={this.handleChange}
-                                    className="form-control"
-                                    placeholder="Tarifa fija"
-                                    aria-label="Tarifa fija"
-                                    aria-describedby="basic-addon1"/>
-                        </div>
+
 
                         <div className="input-group mb-3">
                             <div className="input-group-prepend">
@@ -184,22 +193,19 @@ export default class NewPost extends Component{
                                     this.setState({file: file})
                                 }}
                                 className="form-control"
- />
+                            />
                         </div>
-                        
-                        
-   
-
-
-
-                            {this.alert()}
+                    
+                        {this.alert()}
     
                         <input type="submit" value="Crear" className="btn btn-primary" />
+                        
                     </form>
     
                 </div>
             </div>
-                
+
+
             </>)
         
 
