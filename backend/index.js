@@ -17,6 +17,12 @@ mongoose.connect(process.env.DB_CONNECT,
 { useNewUrlParser: true },
 () => console.log('[OK] DB Conectada'))
 
+// Production / local
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('../build'))
+}
+
+
 // MIDDLEWARE
 app.use(express.json())
 app.use('/postsImg',express.static('postsImg'))
