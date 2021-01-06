@@ -1,5 +1,7 @@
+const dotenv = require('dotenv')
+dotenv.config()
 const config = {
-    serverURL: 'http://192.168.1.60:5000/',
+    serverURL: 'https://floating-falls-17629.herokuapp.com/',
     //serverURL: 'https://localhost:5000',
     //serverURL: '',
 }
