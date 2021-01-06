@@ -76,7 +76,7 @@ export default class UserPage extends Component {
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />}
 
-        if(this.state.isLoggedIn == false){
+        if(this.state.isLoggedIn === false){
             return (
                 <div className="alert alert-warning" role="alert">
                 Necesitas registrarte e iniciar sesión para ver esta página!
@@ -91,7 +91,7 @@ export default class UserPage extends Component {
                         </div>
                         <div className="card-body">
                             <div className="list-group" style={{maxWidth: 700}}>
-                                <a href="#" className="list-group-item list-group-item-action"  onClick={this.logOut}> Cerrar Sesión</a>
+                                <button className="list-group-item list-group-item-action"  onClick={this.logOut}> Cerrar Sesión</button>
                                 <a href="/newpost" className="list-group-item list-group-item-action">Hacer publicacion</a>
                                 <a href="/resetpassword" className="list-group-item list-group-item-action">Cambiar Contraseña</a>
                             </div>

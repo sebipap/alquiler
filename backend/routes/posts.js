@@ -164,13 +164,20 @@ router.post('/:id/question',verify, async(req, res)=>{
 // Post an answer to a question
 router.post('/:postId/answer/:questionId',verify, async(req, res)=>{
 
+    const answer = req.body.body
+
+    
     const post = await Post.findById(req.params.postId)
     const owner_id = post.user_id
     const user_id = req.user._id //desde verify
     
-    const answer = req.body.body
 
     const question = await Question.findById(req.params.questionId)
+
+
+    console.log(post)
+    console.log(answer)
+
 
     if(owner_id == user_id){
         question.answer = answer

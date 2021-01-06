@@ -26,9 +26,9 @@ export default class Post extends Component{
     render(){
         return(
             <Link to={"/post/" + this.props.id}>
-            <div className="card post" style={{maxWidth: '500px', margin: '20px', maxWidth:500}} >
+            <div className="card post" style={{margin: '20px', maxWidth:500}} >
                 
-                <img className="card-img-top" src={this.state.img_url} style={{height: 300 , objectFit: 'cover',}}></img>
+                <img className="card-img-top" src={this.state.img_url} style={{height: 300 , objectFit: 'cover',}} alt="car"></img>
                 <div className="card-body">
     
                     <div className="float-left">

@@ -106,7 +106,6 @@ export default class NewPost extends Component{
                 errorMsg: "",
                 isError: false,
                 isSubmited: true})
-            const newPostURL = res.data.post._id
 
             this.setState({
                 redirect: '/user/'

@@ -2,7 +2,6 @@ import React , { Component }from 'react'
 import { Redirect } from "react-router-dom";
 import config from '../../config'
 import Questions from './Questions'
-import Map from '../Map'
 
 import Cookies from 'universal-cookie'
 const cookies = new Cookies()
@@ -43,7 +42,8 @@ export default class PostPage extends Component {
                 questions: res.questions,
                 ownerName: res.ownerName,
                 ownerEmail: res.ownerEmail,
-            })
+            })  
+            console.log(res.questions)
         })
 
         // Check if user is owner
@@ -90,10 +90,10 @@ export default class PostPage extends Component {
                 <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel">
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img src={this.state.data.img_url} className="d-block w-100"/>
+                            <img src={this.state.data.img_url} className="d-block w-100" alt="car"/>
                         </div>
                         <div className="carousel-item">
-                            <img src={this.state.data.img_url} className="d-block w-100"/>
+                            <img src={this.state.data.img_url} className="d-block w-100" alt="car"/>
                         </div>
                     </div>
                 </div>
@@ -169,10 +169,7 @@ export default class PostPage extends Component {
 
 
                     </li>
-                    <Questions questions={this.state.questions} post_id={this.props.match.params.id} loadPost={this.loadPost}/>
-
-                
-                    <Map />
+                    <Questions questions={this.state.questions} post_id={this.props.match.params.id} loadPost={this.loadPost} isOwner={this.state.isOwner}/>
 
                 </ul>
                

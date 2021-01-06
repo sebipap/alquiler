@@ -20,7 +20,7 @@ const questionSchema = new mongoose.Schema({
     answer: {
         type: String,
         maxlength: 255,
-        minlength: 4
+        minlength: 1
     }
 
 })

@@ -66,28 +66,35 @@ export default class Questions extends Component {
 
 
     render() {
+
+        const questionInput = (
+            <form onSubmit={this.handleSubmit} >
+            <div class="input-group mb-3">
+                <input type="text" 
+                    class="form-control" 
+                    placeholder="Hacé una pregunta" 
+                    value={this.state.question}
+                    onChange={this.handleChange}
+                    />
+                <div class="input-group-append">
+                    <input type="submit" class="btn btn-primary"  value="Enviar" />
+                </div>
+
+            </div>
+                {this.alert()}
+        </form>
+        )
+
+
       return (
         <>
             <li className="list-group-item" id="questions">
                 <div className="card-body">
                     <h3>Preguntas</h3>
-                    {this.props.questions.map(question => <Question question={question.body} answer={question.answer} />)}
+                    {this.props.questions.map(question => <Question question={question.body} answer={question.answer} isOwner={this.props.isOwner} question_id={question._id} loadPost={this.props.loadPost} post_id={this.props.post_id}/>)}
 
-                    <form onSubmit={this.handleSubmit} >
-                        <div class="input-group mb-3">
-                            <input type="text" 
-                                class="form-control" 
-                                placeholder="Hacé una pregunta" 
-                                value={this.state.question}
-                                onChange={this.handleChange}
-                                />
-                            <div class="input-group-append">
-                                <input type="submit" class="btn btn-primary"  value="Enviar" />
-                            </div>
+                    {this.props.isOwner ? "" : questionInput}
 
-                        </div>
-                            {this.alert()}
-                    </form>
 
                 </div>
             </li>

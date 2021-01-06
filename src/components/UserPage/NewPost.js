@@ -1,8 +1,5 @@
 import React, {Component} from 'react'
 import { Redirect } from "react-router-dom";
-
-import Post from '../Posts/Post.js'
-
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 const cookies = new Cookies()
@@ -56,7 +53,6 @@ export default class NewPost extends Component{
                 errorMsg: "",
                 isError: false,
                 isSubmited: true})
-            const newPostURL = res.data.post._id
 
             this.setState({
                 redirect: '/user/'
