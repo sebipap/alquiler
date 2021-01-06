@@ -61,7 +61,11 @@ router.get('/owner/:id/', verify,  async (req, res) =>{
 // Post a Post
 router.post('/', upload.single("file"), verify, async (req, res) =>{
     
-    const fileName = req.user.name + Date.now() + req.file.detectedFileExtension
+    const fileName = req.user._id + Date.now() + req.file.detectedFileExtension
+
+    console.log("user ID: " + req.user._id)
+    console.log("Date.now(): " + Date.now())
+    console.log("req.file.detectedFileExtension: " + req.file.detectedFileExtension)
 
 
     console.log(fileName)
