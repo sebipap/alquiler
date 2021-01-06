@@ -17,10 +17,6 @@ mongoose.connect(process.env.DB_CONNECT,
 { useNewUrlParser: true },
 () => console.log('[OK] DB Conectada'))
 
-// Production / local
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('../build'))
-}
 
 
 // MIDDLEWARE
@@ -32,11 +28,12 @@ app.use('/api/auth', authRoute)
 app.use('/api/posts', postsRoute)
 app.use('/api/user', userRoute)
 
+//  For Production use
 
-if(process.env.NODE_ENV == 'production') {
-    app.use(express.static('../src/build'))
+if(process.env.NODE_ENV === 'production') {
+    app.use(express.static('../build'))
     app.get('*', (req, res) =>{
-        res.sendFile(path.join('../src/build/index.html'))
+        res.sendFile(path.join('../build/index.html'))
     })
 }
 
