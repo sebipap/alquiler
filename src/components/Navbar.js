@@ -43,7 +43,7 @@ export default class Navbar extends Component {
 
                     </ul>
 
-                    <form className="form-inline my-2 my-lg-0">
+                    {/* <form className="form-inline my-2 my-lg-0">
                         <div class="input-group mb-3">
                             <input type="text" 
                                 class="form-control" 
@@ -53,7 +53,7 @@ export default class Navbar extends Component {
                                 <input type="submit" class="btn btn-primary"  value="Buscar" />
                             </div>
                         </div>
-                    </form>
+                    </form> */}
 
                 </div>
             </nav>
